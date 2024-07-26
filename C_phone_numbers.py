@@ -31,31 +31,31 @@
 
 
 Пример 1
->>> 8(495)430-23-97
->>> +7-4-9-5-43-023-97
->>> 4-3-0-2-3-9-7
->>> 8-495-430
-YES
-YES
-NO
+input: 8(495)430-23-97
+input: +7-4-9-5-43-023-97
+input: 4-3-0-2-3-9-7
+input: 8-495-430
+output: YES
+output: YES
+output: NO
 
 Пример 2
->>> 86406361642
->>> 83341994118
->>> 86406361642
->>> 83341994118
-NO
-YES
-NO
+input: 86406361642
+input: 83341994118
+input: 86406361642
+input: 83341994118
+output: NO
+output: YES
+output: NO
 
 Пример 3
->>> +78047952807
->>> +78047952807
->>> +76147514928
->>> 88047952807
-YES
-NO
-YES
+input: +78047952807
+input: +78047952807
+input: +76147514928
+input: 88047952807
+output: YES
+output: NO
+output: YES
 """
 def standardize(phone_number: str):
     phone_number = (

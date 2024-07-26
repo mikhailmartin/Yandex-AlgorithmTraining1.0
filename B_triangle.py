@@ -19,22 +19,22 @@
 
 
 Пример 1
->>> 3
->>> 4
->>> 5
-YES
+input: 3
+input: 4
+input: 5
+output: YES
 
 Пример 2
->>> 3
->>> 5
->>> 4
-YES
+input: 3
+input: 5
+input: 4
+output: YES
 
 Пример 3
->>> 4
->>> 5
->>> 3
-YES
+input: 4
+input: 5
+input: 3
+output: YES
 """
 a, b, c = sorted(map(int, [input() for _ in range(3)]))
 

@@ -21,22 +21,22 @@ NO SOLUTION (заглавными буквами), если решений не�
 
 
 Пример 1
->>> 1
->>> 0
->>> 0
-0
+input: 1
+input: 0
+input: 0
+output: 0
 
 Пример 2
->>> 1
->>> 2
->>> 3
-7
+input: 1
+input: 2
+input: 3
+output: 7
 
 Пример 3
->>> 1
->>> 2
->>> -3
-NO SOLUTION
+input: 1
+input: 2
+input: -3
+output: NO SOLUTION
 """
 a = int(input())
 b = int(input())

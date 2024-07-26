@@ -43,14 +43,14 @@
 
 Примеры:
 Пример 1
->>> 10 20
->>> heat
-20
+input: 10 20
+input: heat
+output: 20
 
 Пример 2
->>> 10 20
->>> freeze
-10
+input: 10 20
+input: freeze
+output: 10
 
 
 Примечания
