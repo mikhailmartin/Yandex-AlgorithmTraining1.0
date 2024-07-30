@@ -59,6 +59,7 @@ def main(a: int, b: int, c: int, d: int, e: int) -> str:
 
 
 if __name__ == "__main__":
+
     a, b, c, d, e = [int(input()) for _ in range(5)]
     answer = main(a, b, c, d, e)
     print(answer)

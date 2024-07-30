@@ -29,4 +29,4 @@ def test_G_components_recursive(n, k, m, expected):
 )
 def test_G_components_not_recursive(n, k, m, expected):
 
-    assert recursive(n, k, m) == expected
+    assert not_recursive(n, k, m) == expected
