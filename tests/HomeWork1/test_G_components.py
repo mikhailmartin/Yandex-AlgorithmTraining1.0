@@ -1,9 +1,9 @@
 import sys
-sys.path.append("..")
+sys.path.append("../..")
 
 import pytest
 from pytest import param
-from G_components import recursive, not_recursive
+from HomeWork1.G_components import recursive, not_recursive
 
 
 @pytest.mark.parametrize(

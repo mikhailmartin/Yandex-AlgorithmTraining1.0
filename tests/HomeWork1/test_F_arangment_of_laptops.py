@@ -1,9 +1,9 @@
 import sys
-sys.path.append("..")
+sys.path.append("../..")
 
 import pytest
 from pytest import param
-from F_arangment_of_laptops import main
+from HomeWork1.F_arangment_of_laptops import main
 
 
 @pytest.mark.parametrize(

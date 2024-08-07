@@ -1,9 +1,9 @@
 import sys
-sys.path.append("..")
+sys.path.append("../..")
 
 import pytest
 from pytest import param
-from J_system_of_linear_equations_2 import main
+from HomeWork1.J_system_of_linear_equations_2 import main
 
 
 @pytest.mark.parametrize(
