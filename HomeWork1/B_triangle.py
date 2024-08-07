@@ -38,11 +38,13 @@ input: 5
 input: 3
 output: YES
 """
-a, b, c = sorted(map(int, [input() for _ in range(3)]))
+if __name__ == "__main__":
 
-if a + b > c:
-    answer = "YES"
-else:
-    answer = "NO"
+    a, b, c = sorted(map(int, [input() for _ in range(3)]))
 
-print(answer)
+    if a + b > c:
+        answer = "YES"
+    else:
+        answer = "NO"
+
+    print(answer)

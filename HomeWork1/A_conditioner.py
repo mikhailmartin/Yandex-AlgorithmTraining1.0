@@ -63,19 +63,21 @@ output: 10
 температура в комнате ниже, чем желаемая, кондиционер самостоятельно
 выключается и температура в комнате не поменяется.
 """
-t_room, t_cond = map(int, input().split())
-mode = input()
+if __name__ == "__main__":
 
-match mode:
-    case "freeze":
-        t_result = t_cond if t_room >= t_cond else t_room
-    case "heat":
-        t_result = t_cond if t_cond >= t_room else t_room
-    case "auto":
-        t_result = t_cond
-    case "fan":
-        t_result = t_room
-    case _:
-        assert False
+    t_room, t_cond = map(int, input().split())
+    mode = input()
 
-print(t_result)
+    match mode:
+        case "freeze":
+            t_result = t_cond if t_room >= t_cond else t_room
+        case "heat":
+            t_result = t_cond if t_cond >= t_room else t_room
+        case "auto":
+            t_result = t_cond
+        case "fan":
+            t_result = t_room
+        case _:
+            assert False
+
+    print(t_result)

@@ -61,7 +61,7 @@ output: YES
 """
 
 
-def standardize(phone_number: str):
+def standardize(phone_number: str) -> str:
     phone_number = (
         phone_number
         .replace("+7", "8")
@@ -78,12 +78,14 @@ def standardize(phone_number: str):
     return phone_number
 
 
-new_phone_number = standardize(input())
+if __name__ == "__main__":
 
-for _ in range(3):
-    old_phone_number = standardize(input())
+    new_phone_number = standardize(input())
 
-    if new_phone_number == old_phone_number:
-        print("YES")
-    else:
-        print("NO")
+    for _ in range(3):
+        old_phone_number = standardize(input())
+
+        if new_phone_number == old_phone_number:
+            print("YES")
+        else:
+            print("NO")

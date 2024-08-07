@@ -40,22 +40,24 @@ input: 2
 input: -3
 output: NO SOLUTION
 """
-a = int(input())
-b = int(input())
-c = int(input())
+if __name__ == "__main__":
 
-if c < 0:
-    x = "NO SOLUTION"
-elif a == 0:
-    if b == (c ** 2):
-        x = "MANY SOLUTIONS"
-    else:
-        x = "NO SOLUTION"
-else:
-    x = (c ** 2 - b) / a
-    if (x % 1) == 0:
-        x = int(x)
-    else:
-        x = "NO SOLUTION"
+    a = int(input())
+    b = int(input())
+    c = int(input())
 
-print(x)
+    if c < 0:
+        x = "NO SOLUTION"
+    elif a == 0:
+        if b == (c ** 2):
+            x = "MANY SOLUTIONS"
+        else:
+            x = "NO SOLUTION"
+    else:
+        x = (c ** 2 - b) / a
+        if (x % 1) == 0:
+            x = int(x)
+        else:
+            x = "NO SOLUTION"
+
+    print(x)
