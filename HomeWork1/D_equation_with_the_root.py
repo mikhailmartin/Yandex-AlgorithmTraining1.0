@@ -40,11 +40,10 @@ input: 2
 input: -3
 output: NO SOLUTION
 """
-if __name__ == "__main__":
+from typing import Literal
 
-    a = int(input())
-    b = int(input())
-    c = int(input())
+
+def main(a: int, b: int, c: int) -> Literal["NO SOLUTION", "MANY SOLUTIONS"] | int:
 
     if c < 0:
         x = "NO SOLUTION"
@@ -60,4 +59,11 @@ if __name__ == "__main__":
         else:
             x = "NO SOLUTION"
 
+    return x
+
+
+if __name__ == "__main__":
+
+    a, b, c = [int(input()) for _ in range(3)]
+    x = main(a, b, c)
     print(x)

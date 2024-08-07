@@ -38,13 +38,21 @@ input: 5
 input: 3
 output: YES
 """
-if __name__ == "__main__":
+from typing import Literal
 
-    a, b, c = sorted(map(int, [input() for _ in range(3)]))
+
+def main(a:int, b: int, c: int) -> Literal["YES", "NO"]:
 
     if a + b > c:
         answer = "YES"
     else:
         answer = "NO"
 
+    return answer
+
+
+if __name__ == "__main__":
+
+    a, b, c = sorted(map(int, [input() for _ in range(3)]))
+    answer = main(a, b, c)
     print(answer)

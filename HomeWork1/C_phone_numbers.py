@@ -62,6 +62,7 @@ output: YES
 
 
 def standardize(phone_number: str) -> str:
+
     phone_number = (
         phone_number
         .replace("+7", "8")

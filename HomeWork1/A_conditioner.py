@@ -63,10 +63,14 @@ output: 10
 температура в комнате ниже, чем желаемая, кондиционер самостоятельно
 выключается и температура в комнате не поменяется.
 """
-if __name__ == "__main__":
+from typing import Literal
 
-    t_room, t_cond = map(int, input().split())
-    mode = input()
+
+def main(
+    t_room: int,
+    t_cond: int,
+    mode: Literal["freeze", "heat", "auto", "fan"],
+) -> int:
 
     match mode:
         case "freeze":
@@ -80,4 +84,12 @@ if __name__ == "__main__":
         case _:
             assert False
 
+    return t_result
+
+
+if __name__ == "__main__":
+
+    t_room, t_cond = map(int, input().split())
+    mode = input()
+    t_result = main(t_room, t_cond, mode)
     print(t_result)
