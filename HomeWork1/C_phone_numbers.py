@@ -59,6 +59,8 @@ output: YES
 output: NO
 output: YES
 """
+
+
 def standardize(phone_number: str):
     phone_number = (
         phone_number
