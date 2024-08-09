@@ -103,7 +103,6 @@ def main(a: int, b: int, c: int, d: int, e: int, f: int) -> str:
 
 if __name__ == "__main__":
 
-    # a, b, c, d, e, f = [float(input()) for _ in range(6)]
-    a, b, c, d, e, f = 1, 0, 0, 1, 3, 3
+    a, b, c, d, e, f = [float(input()) for _ in range(6)]
     answer = main(a, b, c, d, e, f)
     print(answer)
