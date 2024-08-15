@@ -56,12 +56,49 @@ output: 1 * 2 *
 """
 
 
-def main(n, m, mines):
+def main(n: int, m: int, mines: list[tuple[int, int]]):
+    """
+    Строит поле для игры "Сапёр" по его конфигурации.
 
-    return
+    Parameters:
+        n: количество строк на поле;
+        m: количество столбцов на поле;
+        mines: список с координатами мин, координаты - кортежи вида (p, q),
+          где p - номер строки мины, q - номер столбца мины.
+
+    Returns:
+        Поле для игры "Сапёр".
+    """
+    lines = []
+    for line_number in range(1, n+1):
+
+        cells = []
+        for column_number in range(1, m+1):
+
+            count = 0
+            for p, q in mines:
+
+                dif1 = abs(p - line_number)
+                dif2 = abs(q - column_number)
+
+                if dif1 == 0 and dif2 == 0:
+                    count = "*"
+                    break
+                elif dif1 <= 1 and dif2 <= 1:
+                    count += 1
+
+            cells.append(str(count))
+
+        line = " ".join(cells)
+        lines.append(line)
+
+    lines = "\n".join(lines)
+
+    return lines
 
 
 if __name__ == "__main__":
 
     n, m, k = map(int, input().split())
     mines = [tuple(map(int, input().split())) for _ in range(k)]
+    print(main(n, m, mines))
