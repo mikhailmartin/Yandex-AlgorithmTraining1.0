@@ -46,3 +46,15 @@ output: 1234567890
 Эту задачу можно решить и без словарей (сохранив все входные данные в списке),
 но решение со словарем будет более простым.
 """
+if __name__ == "__main__":
+
+    n = int(input())
+
+    synonyms = dict()
+    for _ in range(n):
+        word1, word2 = input().split()
+        synonyms[word1] = word2
+        synonyms[word2] = word1
+
+    word = input().strip()
+    print(synonyms[word])
