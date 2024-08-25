@@ -49,3 +49,15 @@ output: NO
 output: NO
 output: YES
 """
+if __name__ == "__main__":
+
+    n = int(input())
+    cs = list(map(int, input().split()))
+    k = int(input())
+    ps = list(map(int, input().split()))
+
+    for num in ps:
+        cs[num - 1] -= 1
+
+    for key in cs:
+        print("YES" if key < 0 else "NO")
