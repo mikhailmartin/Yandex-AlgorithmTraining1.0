@@ -114,3 +114,51 @@ cAnnot, а потом cannOt, так и наоборот).Две ошибки, �
 словаре, в нем поставлено ровно одно ударение). В остальных словах либо ударные
 все буквы (в слове PAGE), либо не поставлено ни одного ударения.
 """
+
+
+def main(dictionary: dict[str, list[str]], test: str) -> int:
+
+    mistake_count = 0
+    for accent in test.split():
+        word = accent.lower()
+        if word in dictionary:
+            if accent not in dictionary[word]:
+                mistake_count += 1
+        else:
+            if upper_count(accent) != 1:
+                mistake_count += 1
+
+    return mistake_count
+
+
+def read_dictionary(n: int) -> dict[str, list[str]]:
+
+    dictionary = dict()
+    for _ in range(n):
+        accent = input()
+        word = accent.lower()
+        if word not in dictionary:
+            dictionary[word] = [accent]
+        else:
+            dictionary[word].append(accent)
+
+    return dictionary
+
+
+def upper_count(accent):
+
+    count = 0
+    for char in accent:
+        if char.isupper():
+            count += 1
+
+    return count
+
+
+if __name__ == "__main__":
+
+    n = int(input())
+    dictionary = read_dictionary(n)
+    test = input()
+    mistake_count = main(dictionary, test)
+    print(mistake_count)
