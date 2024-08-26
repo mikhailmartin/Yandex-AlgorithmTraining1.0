@@ -8,13 +8,13 @@
 
 Преподаватель курса ОиМП заказал у одного известного психолога полное
 психологическое обследование всех студентов, поступивших на ФНК с целью выяснить
-их склонность к списыванию еще до начала занятий и отчислить их за списывание
-еще до того как они приступят к занятиям и смогут позорить ФНК своими
+их склонность к списыванию ещё до начала занятий и отчислить их за списывание
+ещё до того как они приступят к занятиям и смогут позорить ФНК своими
 преступлениями. Психолог, привлеченный для проведения обследования, известен
 своим инновационным методом, позволяющим понять склонность к списыванию студента
 по наиболее часто используемому им в программах идентификатору. Помогите
 известному психологу определить, какие из студентов потенциально являются
-преступниками. Напишите программу, которая по приведенной программе выяснит
+преступниками. Напишите программу, которая по приведённой программе выяснит
 наиболее часто используемый в ней идентификатор.
 
 Поскольку разные студенты на тестировании пишут программы на разных языках
@@ -40,9 +40,9 @@
 Следующие n строк содержат по одному слову, состоящему из букв латинского
 алфавита и символов подчеркивания - ключевые слова. Все ключевые слова непусты,
 различны, при этом, если язык не чувствителен к регистру, то различны и без
-учета регистра. Длина каждого ключевого слова не превышает 50 символов.
+учёта регистра. Длина каждого ключевого слова не превышает 50 символов.
 
-Далее до конца входных данных идет текст программы. Он содержит только символы с
+Далее до конца входных данных идёт текст программы. Он содержит только символы с
 ASCII-кодами от 32 до 126 и переводы строки.
 
 Размер входных данных не превышает 10 килобайт. В программе есть хотя бы один
@@ -101,3 +101,97 @@ input: b = 0h
 input: c = 0h
 output: 0h
 """
+import re
+
+
+INPUT_FILE_NAME = "input.txt"
+
+
+def parse_input() -> tuple[list[str], set[str], bool, bool]:
+
+    # читаем файл в список строк
+    input_file = open(INPUT_FILE_NAME, "r", encoding="utf8")
+    lines = input_file.read().strip().split("\n")
+
+    # читаем входные параметры и приводим их к нормальной форме
+    n, C, D = lines[0].split()
+    n = int(n)
+    match C:
+        case "yes":
+            is_case_sensitive = True
+        case "no":
+            is_case_sensitive = False
+    match D:
+        case "yes":
+            can_start_with_number = True
+        case "no":
+            can_start_with_number = False
+
+    # читаем ключевые слова с проверками
+    keywords = set()
+    for keyword in lines[1: n + 1]:
+
+        if not is_case_sensitive:
+            keyword = keyword.lower()
+
+        if not can_start_with_number and keyword[0].isdigit():
+            continue
+
+        keywords.add(keyword)
+
+    # читаем слова в программе в список
+    words = []
+    for line in lines[n + 1:]:
+        line = re.sub("[^a-zA-Z0-9_]", " ", line)
+        words.extend(line.split())
+
+    return words, keywords, is_case_sensitive, can_start_with_number
+
+
+def get_identifier_count(
+    words: list[str],
+    keywords: set[str],
+    is_case_sensitive: bool,
+    can_start_with_number: bool,
+) -> dict[str, int]:
+
+    identifier_count = dict()
+    for word in words:
+
+        if not is_case_sensitive:
+            word = word.lower()
+
+        if not is_identifier(word, keywords, can_start_with_number):
+            continue
+
+        identifier_count[word] = identifier_count.get(word, 0) + 1
+
+    return identifier_count
+
+
+def is_identifier(word: str, keywords: set[str], can_start_with_number: bool) -> bool:
+
+    if not can_start_with_number and word[0].isdigit():
+        return False
+
+    if word.isdigit():
+        return False
+
+    if word in keywords:
+        return False
+
+    return True
+
+
+if __name__ == "__main__":
+
+    identifier_count = get_identifier_count(*parse_input())
+
+    max_count = -1
+    max_identifier = None
+    for identifier, count in identifier_count.items():
+        if count > max_count:
+            max_count = count
+            max_identifier = identifier
+
+    print(max_identifier)
