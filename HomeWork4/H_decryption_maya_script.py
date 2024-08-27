@@ -36,9 +36,9 @@
 
 Формат ввода:
 1 ≤ g ≤ 3 000, g – количество значков в слове W
-g ≤ |S| ≤ 3 000 000 где |S| – количество значков в последовательности S
+g ≤ |S| ≤ 3 000 000, где |S| – количество значков в последовательности S.
 На вход программы поступают данные в следующем формате:
-СТРОКА 1: Содержит два числа, разделенных пробелом – g и |S|.
+СТРОКА 1: Содержит два числа, разделённых пробелом – g и |S|.
 СТРОКА 2: Содержит g последовательных символов, с помощью которых записывается
 слово W. Допустимы символы: ‘a’-‘z’ и ‘A’-‘Z’; большие и маленькие буквы
 считаются различными.
@@ -58,3 +58,52 @@ input: cAda
 input: AbrAcadAbRa
 output: 2
 """
+
+
+class CharCounter(dict):
+    def __init__(self, string: str) -> None:
+
+        super().__init__()
+        for char in string:
+            self[char] = self.get(char, 0) + 1
+
+    def remove(self, char) -> None:
+
+        count = self[char] - 1
+        if count == 0:
+            self.pop(char)
+        else:
+            self[char] = count
+
+    def add(self, char) -> None:
+        self[char] = self.get(char, 0) + 1
+
+
+def main(len_word: int, len_string: int, word: str, string: str) -> int:
+
+    w_cc = CharCounter(word)
+    s_cc = CharCounter(string[:len_word])
+    count = 1 if w_cc == s_cc else 0
+
+    for i in range(len_string - len_word):
+
+        char_to_remove = string[i]
+        char_to_add = string[i+len_word]
+
+        s_cc.remove(char_to_remove)
+        s_cc.add(char_to_add)
+
+        if w_cc == s_cc:
+            count += 1
+
+    return count
+
+
+if __name__ == "__main__":
+
+    len_word, len_string = map(int, input().split())
+    word = input()
+    string = input()
+
+    count = main(len_word, len_string, word, string)
+    print(count)
