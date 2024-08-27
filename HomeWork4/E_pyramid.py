@@ -18,7 +18,7 @@
 
 
 Формат ввода:
-В первой строке входных данных задается число N — количество блоков
+В первой строке входных данных задаётся число N — количество блоков
 (1 ≤ N ≤ 100000). В следующих N строках задаются пары натуральных чисел w_i
 и h_i (1 ≤ w_i, h_i ≤ 10^9) — ширина и высота блока соответственно.
 
@@ -39,3 +39,26 @@ output: 5
 номер 3, а верхним — блок номер 2. Блок номер 1 нельзя использовать вместе с
 блоком номер 3.
 """
+
+
+def get_height_pyramid(blocks: list[tuple[int, int]]) -> int:
+
+    some_dict = {}
+    for width, height in blocks:
+        if height > some_dict.get(width, 0):
+            some_dict[width] = height
+
+    height_pyramid = 0
+    for width, height in some_dict.items():
+        height_pyramid += height
+
+    return height_pyramid
+
+
+if __name__ == "__main__":
+
+    n = int(input())
+    blocks = [tuple(map(int, input().split())) for _ in range(n)]
+
+    height_pyramid = get_height_pyramid(blocks)
+    print(height_pyramid)
