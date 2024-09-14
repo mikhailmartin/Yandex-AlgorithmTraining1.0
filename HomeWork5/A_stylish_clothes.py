@@ -51,5 +51,43 @@ input: 5
 input: 1 2 3 4 5
 input: 5
 input: 1 2 3 4 5
-output: 1
+output: 1 1
 """
+
+
+def main(n: int, shirts: list[int], m: int, pants: list[int]) -> tuple[int, int]:
+
+    i = j = 0
+    i_best = j_best = 0
+    style_best = abs(shirts[i] - pants[j])
+
+    while i < n and j < m:
+
+        style = abs(shirts[i] - pants[j])
+
+        if style < style_best:
+
+            i_best = i
+            j_best = j
+            style_best = style
+
+            if style_best == 0:
+                break
+
+        if shirts[i] < pants[j]:
+            i += 1
+        else:
+            j += 1
+
+    return shirts[i_best], pants[j_best]
+
+
+if __name__ == "__main__":
+
+    n = int(input())
+    shirts = list(map(int, input().split()))
+    m = int(input())
+    pants = list(map(int, input().split()))
+
+    result = main(n, shirts, m, pants)
+    print(*result)
