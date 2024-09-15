@@ -75,3 +75,47 @@ output: 0
 output: 5
 output: 4
 """
+
+
+def main(
+    n: int,
+    mountain_chain: list[tuple[int, int]],
+    tracks: list[tuple[int, int]]
+) -> list[int]:
+
+    # 0-ий индекс - технический
+    # 1-ый индекс - всегда 0
+    prefix_sum_forward = [0] * (n+1)
+    for i in range(2, n+1):
+        ascent = max(mountain_chain[i-1][1] - mountain_chain[i-2][1], 0)
+        prefix_sum_forward[i] = prefix_sum_forward[i-1] + ascent
+
+    prefix_sum_backward = [0] * (n+2)
+    for i in range(n-1, 0, -1):
+        ascent = max(mountain_chain[i-1][1] - mountain_chain[i][1], 0)
+        prefix_sum_backward[i] = prefix_sum_backward[i+1] + ascent
+
+    results = []
+    for start, finish in tracks:
+
+        if start == finish:
+            answer = 0
+        elif start < finish:
+            answer = prefix_sum_forward[finish] - prefix_sum_forward[start]
+        elif start > finish:
+            answer = prefix_sum_backward[finish] - prefix_sum_backward[start]
+
+        results.append(answer)
+
+    return results
+
+
+if __name__ == "__main__":
+
+    n = int(input())
+    mountain_chain = [tuple(map(int, input().split())) for _ in range(n)]
+    m = int(input())
+    tracks = [tuple(map(int, input().split())) for _ in range(m)]
+
+    result = main(n, mountain_chain, tracks)
+    print(*result, sep="\n")
