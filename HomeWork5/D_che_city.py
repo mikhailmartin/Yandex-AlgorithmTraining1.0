@@ -47,3 +47,30 @@ output: 2
 Примечания:
 В приведенном примере Маша может выбрать памятники 1 и 4 или памятники 2 и 4.
 """
+
+
+def main(n: int, r: int, monuments: list[int]) -> int:
+
+    i = j = 0
+    count = 0
+
+    while i < n and j < n:
+
+        distance = monuments[j] - monuments[i]
+
+        if distance <= r:
+            j += 1
+        else:
+            count += n-j
+            i += 1
+
+    return count
+
+
+if __name__ == "__main__":
+
+    n, r = map(int, input().split())
+    monuments = list(map(int, input().split()))
+
+    result = main(n, r, monuments)
+    print(result)
