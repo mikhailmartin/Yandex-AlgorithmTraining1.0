@@ -41,3 +41,38 @@ input: 6 4
 input: 2 4 2 3 3 1
 output: 2 6
 """
+
+
+def main(n: int, k: int, trees: list[int]) -> tuple[int, int]:
+
+    best_left_pointer = 0
+    best_right_pointer = n-1
+    tree_type_counter = ["tech"] + [0] * k
+    unique_tree_type_counter = 0
+
+    left_pointer = 0
+    for right_pointer, tree_type in enumerate(trees):
+
+        if tree_type_counter[tree_type] == 0:
+            unique_tree_type_counter += 1
+        tree_type_counter[tree_type] += 1
+
+        if unique_tree_type_counter == k:
+            while tree_type_counter[trees[left_pointer]] > 1:
+                tree_type_counter[trees[left_pointer]] -= 1
+                left_pointer += 1
+
+            if best_right_pointer - best_left_pointer > right_pointer - left_pointer:
+                best_left_pointer = left_pointer
+                best_right_pointer = right_pointer
+
+    return best_left_pointer+1, best_right_pointer+1
+
+
+if __name__ == "__main__":
+
+    n, k = map(int, input().split())
+    trees = list(map(int, input().split()))
+
+    left, right = main(n, k, trees)
+    print(left, right)
