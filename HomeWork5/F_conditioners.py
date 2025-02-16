@@ -71,3 +71,56 @@ output: 13
 кондиционеры четвертого типа, а в третьем классе – кондиционер третьего типа.
 Суммарная стоимость этих кондиционеров будет составлять 13 рублей (3 + 3 + 7).
 """
+
+
+def parse_input() -> tuple[list[int], list[tuple[int, int]]]:
+
+    n = int(input())
+    powers = list(map(int, input().split(" ")))
+    m = int(input())
+    power_price = [tuple(map(int, input().split(" "))) for _ in range(m)]
+
+    return powers, power_price
+
+
+def main(powers: list[int], power_price: list[tuple[int, int]]) -> int:
+
+    power_price = preprocessed(power_price)
+
+    total_cost = 0
+    for power in powers:
+        for power_, price_ in power_price:
+            if power_ < power:
+                continue
+            else:
+                total_cost += price_
+                break
+
+    return total_cost
+
+
+def preprocessed(old_power_price: list[tuple[int, int]]) -> list[tuple[int, int]]:
+
+    old_power_price = sorted(old_power_price, reverse=True)
+    for i in range(1, len(old_power_price)):
+        current_power, current_price = old_power_price[i]
+        previous_power, previous_price = old_power_price[i - 1]
+        old_power_price[i] = (current_power, min(current_price, previous_price))
+
+    old_power_price = sorted(old_power_price)
+    new_power_price = [old_power_price[0]]
+    previous_power = old_power_price[0][0]
+    for power, price in old_power_price:
+        if power != previous_power:
+            new_power_price.append((power, price))
+            previous_power = power
+
+    return new_power_price
+
+
+if __name__ == "__main__":
+
+    powers, power_price = parse_input()
+
+    result = main(powers, power_price)
+    print(result)
