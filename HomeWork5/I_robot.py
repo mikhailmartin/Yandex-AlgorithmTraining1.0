@@ -51,3 +51,35 @@ input: 2
 input: abc
 output: 0
 """
+
+
+def parse_data() -> tuple[int, str]:
+
+    k = int(input())
+    operations = input()
+
+    return k, operations
+
+
+def main(k: int, operations: str) -> int:
+    """
+    Подсмотрел решение на разборе задач. Тотально не понимаю условия.
+
+    """
+    result = 0
+    previous_length = 0
+    for i in range(k, len(operations)):
+        if operations[i] == operations[i - k]:
+            previous_length += 1
+            result += previous_length
+        else:
+            previous_length = 0
+
+    return result
+
+
+if __name__ == "__main__":
+
+    k, operations = parse_data()
+    result = main(k, operations)
+    print(result)
