@@ -31,3 +31,44 @@ input: 5 2
 input: ababa
 output: 4 1
 """
+
+
+def parse_data() -> tuple[int, str]:
+
+    n, k = map(int, input().split())
+    string = input()
+
+    return k, string
+
+
+def main(k: int, string: str):
+
+    # инициализируем словарь со всеми символами
+    char_counter = dict()
+    for char in string:
+        char_counter[char] = 0
+
+    best_length = -1
+    best_start = -1
+    right_pointer = 0
+    for left_pointer in range(len(string)):
+
+        while right_pointer < len(string) and char_counter[string[right_pointer]] <= k-1:
+            char_counter[string[right_pointer]] += 1
+            right_pointer += 1
+
+        current_length = right_pointer - left_pointer
+        if current_length > best_length:
+            best_length = current_length
+            best_start = left_pointer
+
+        char_counter[string[left_pointer]] -= 1
+
+    return best_length, best_start+1
+
+
+if __name__ == "__main__":
+
+    k, string = parse_data()
+    result = main(k, string)
+    print(*result)
