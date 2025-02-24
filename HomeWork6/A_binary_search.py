@@ -61,3 +61,46 @@ output: YES
 output: YES
 output: NO
 """
+
+
+def parse_data() -> tuple[list, list]:
+
+    n, k = map(int, input().split())
+    list1 = list(map(int, input().split()))
+    list2 = list(map(int, input().split()))
+
+    return list1, list2
+
+
+def main(list1: list, list2: list) -> list:
+
+    left_pointer = 0
+    right_pointer = len(list2)-1
+    result = []
+    for k in list2:
+        pointer = left_binary_search(left_pointer, right_pointer, check_less, )
+
+    return result
+
+
+def left_binary_search(left_pointer: int, right_pointer: int, check, check_params):
+
+    while left_pointer < right_pointer:
+        center_pointer = (left_pointer + right_pointer) // 2
+        if check(center_pointer, check_params):
+            right_pointer = center_pointer
+        else:
+            left_pointer = center_pointer + 1
+
+    return left_pointer
+
+
+def check_less(pointer: int, list_: list, number: int) -> bool:
+    return list_[pointer] <= number
+
+
+if __name__ == "__main__":
+
+    list1, list2 = parse_data()
+    result = main(list1, list2)
+    print(*result, sep="\n")
