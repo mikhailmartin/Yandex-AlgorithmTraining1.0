@@ -1,4 +1,4 @@
-# Тренировки по алгоритмам 1.0
+# [Тренировки по алгоритмам 1.0](https://yandex.ru/yaintern/algorithm-training_2021)
 
 <details><summary>✔️ HomeWork1 «Сложность, тестирование, особые случаи»</summary>
 
@@ -84,8 +84,6 @@
    - ❌ J. Медиана объединения
    - ❌ K. Медиана объединения-2
 </details>
-
-[Лекции и разборы домашних заданий](https://www.youtube.com/playlist?list=PL6Wui14DvQPySdPv5NUqV3i8sDbHkCKC5)
 
 ### напоминалка, как запускать тесты
 ```commandline
