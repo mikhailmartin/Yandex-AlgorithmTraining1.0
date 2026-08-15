@@ -61,46 +61,87 @@ output: YES
 output: YES
 output: NO
 """
+from dataclasses import dataclass
+from typing import Self
 
 
-def parse_data() -> tuple[list, list]:
-
-    n, k = map(int, input().split())
-    list1 = list(map(int, input().split()))
-    list2 = list(map(int, input().split()))
-
-    return list1, list2
-
-
-def main(list1: list, list2: list) -> list:
-
-    left_pointer = 0
-    right_pointer = len(list2)-1
-    result = []
-    for k in list2:
-        pointer = left_binary_search(left_pointer, right_pointer, check_less, )
-
-    return result
+@dataclass(frozen=True)
+class ProblemInput:
+    n : int
+    k: int
+    array1: list[int]
+    array2: list[int]
 
 
-def left_binary_search(left_pointer: int, right_pointer: int, check, check_params):
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
 
-    while left_pointer < right_pointer:
-        center_pointer = (left_pointer + right_pointer) // 2
-        if check(center_pointer, check_params):
-            right_pointer = center_pointer
-        else:
-            left_pointer = center_pointer + 1
+    @property
+    def n(self):
+        return self.data.n
 
-    return left_pointer
+    @property
+    def array1(self):
+        return self.data.array1
+
+    @property
+    def array2(self):
+        return self.data.array2
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        n, k = map(int, input().split())
+        array1 = list(map(int, input().split()))
+        array2 = list(map(int, input().split()))
+
+        return cls(ProblemInput(n, k, array1, array2))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        n, k = map(int, lines[0].split())
+        array1 = list(map(int, lines[1].split()))
+        array2 = list(map(int, lines[2].split()))
+
+        return cls(ProblemInput(n, k, array1, array2))
+
+    def solve(self) -> list:
+
+        result = []
+        for num in self.array2:
+            index = self.left_binary_search(left=0, right=self.n - 1, check_param=num)
+            if num == self.array1[index]:
+                result.append("YES")
+            else:
+                result.append("NO")
+
+        return result
+
+    def left_binary_search(self, left: int, right: int, check_param: int) -> int:
+
+        while left < right:
+            middle = (left + right) // 2
+            if self.check(middle, check_param):
+                right = middle
+            else:
+                left = middle + 1
+
+        return left
+
+    def check(self, pointer: int, check_param: int) -> bool:
+        return self.array1[pointer] >= check_param
 
 
-def check_less(pointer: int, list_: list, number: int) -> bool:
-    return list_[pointer] <= number
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    for answer in result:
+        print(answer)
 
 
 if __name__ == "__main__":
-
-    list1, list2 = parse_data()
-    result = main(list1, list2)
-    print(*result, sep="\n")
+    main()
