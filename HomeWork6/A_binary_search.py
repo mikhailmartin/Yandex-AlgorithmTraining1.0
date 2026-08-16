@@ -78,15 +78,15 @@ class Solver:
         self.data = data
 
     @property
-    def n(self):
+    def n(self) -> int:
         return self.data.n
 
     @property
-    def array1(self):
+    def array1(self) -> list[int]:
         return self.data.array1
 
     @property
-    def array2(self):
+    def array2(self) -> list[int]:
         return self.data.array2
 
     @classmethod
