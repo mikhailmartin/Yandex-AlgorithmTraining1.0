@@ -52,3 +52,96 @@ output: 0
 input: 1 1 1 3 3
 output: 1
 """
+from dataclasses import dataclass
+from typing import Self
+
+
+@dataclass(frozen=True)
+class ProblemInput:
+    n: int
+    a: int
+    b: int
+    w: int
+    h: int
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @property
+    def n(self) -> int:
+        return self.data.n
+
+    @property
+    def module_size1(self) -> int:
+        return self.data.a
+
+    @property
+    def module_size2(self) -> int:
+        return self.data.b
+
+    @property
+    def area_width(self) -> int:
+        return self.data.w
+
+    @property
+    def area_height(self) -> int:
+        return self.data.h
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+        n, a, b, w, h = map(int, input().split())
+        return cls(ProblemInput(n, a, b, w, h))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+        n, a, b, w, h = map(int, lines[0].split())
+        return cls(ProblemInput(n, a, b, w, h))
+
+    def solve(self) -> int:
+
+        max_protection1 = (self.area_width - self.module_size1) // 2
+        max_protection2 = (self.area_width - self.module_size2) // 2
+        max_protection = max(max_protection1, max_protection2)
+
+        protection = self.right_binary_search(left=0, right=max_protection)
+
+        return protection
+
+    def right_binary_search(self, left: int, right: int) -> int:
+
+        while left < right:
+            middle = (left + right + 1) // 2
+            if self.check(middle):
+                left = middle
+            else:
+                right = middle - 1
+
+        return left
+
+    def check(self, protection: int) -> bool:
+
+        # обычная ориентация
+        n_row = self.area_width // (self.module_size1 + 2 * protection)
+        n_col = self.area_height // (self.module_size2 + 2 * protection)
+        n1 = n_row * n_col
+
+        # повёрнутая на 90 градусов
+        n_row = self.area_width // (self.module_size2 + 2 * protection)
+        n_col = self.area_height // (self.module_size1 + 2 * protection)
+        n2 = n_row * n_col
+
+        return self.n <= n1 or self.n <= n2
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
