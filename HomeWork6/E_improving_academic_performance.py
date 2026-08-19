@@ -42,3 +42,81 @@ input: 0
 input: 0
 output: 2
 """
+from dataclasses import dataclass
+from typing import Self
+
+
+@dataclass(frozen=True)
+class ProblemInput:
+    twos: int
+    threes: int
+    fours: int
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @property
+    def twos(self) -> int:
+        return self.data.twos
+
+    @property
+    def threes(self) -> int:
+        return self.data.threes
+
+    @property
+    def fours(self) -> int:
+        return self.data.fours
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        a = int(input())
+        b = int(input())
+        c = int(input())
+
+        return cls(ProblemInput(a, b, c))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        a = int(lines[0])
+        b = int(lines[1])
+        c = int(lines[2])
+
+        return cls(ProblemInput(a, b, c))
+
+    def solve(self) -> int:
+
+        amount = self.twos + self.threes + self.fours
+        fives = self.left_binary_search(left=0, right=amount)
+
+        return fives
+
+    def left_binary_search(self, left: int, right: int) -> int:
+
+        while left < right:
+            middle = (left + right) // 2
+            if self.check(middle):
+                right = middle
+            else:
+                left = middle + 1
+
+        return left
+
+    def check(self, fives: int) -> bool:
+        amount = self.twos * 2 + self.threes * 3 + self.fours * 4 + fives * 5
+        n = self.twos + self.threes + self.fours + fives
+        return 2 * amount >= 7 * n
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+    print(result)
+
+
+if __name__ == "__main__":
+    main()

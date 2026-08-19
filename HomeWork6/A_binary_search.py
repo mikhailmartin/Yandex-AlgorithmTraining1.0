@@ -67,7 +67,7 @@ from typing import Self
 
 @dataclass(frozen=True)
 class ProblemInput:
-    n : int
+    n: int
     k: int
     array1: list[int]
     array2: list[int]
