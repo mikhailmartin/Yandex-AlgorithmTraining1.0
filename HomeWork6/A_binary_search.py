@@ -111,7 +111,7 @@ class Solver:
 
         result = []
         for num in self.array2:
-            index = self.left_binary_search(left=0, right=self.n - 1, check_param=num)
+            index = self.left_binary_search(lo=0, hi=self.n - 1, check_param=num)
             if num == self.array1[index]:
                 result.append("YES")
             else:
@@ -119,16 +119,16 @@ class Solver:
 
         return result
 
-    def left_binary_search(self, left: int, right: int, check_param: int) -> int:
+    def left_binary_search(self, lo: int, hi: int, check_param: int) -> int:
 
-        while left < right:
-            middle = (left + right) // 2
-            if self.check(middle, check_param):
-                right = middle
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if self.check(mid, check_param):
+                hi = mid
             else:
-                left = middle + 1
+                lo = mid + 1
 
-        return left
+        return lo
 
     def check(self, pointer: int, check_param: int) -> bool:
         return self.array1[pointer] >= check_param

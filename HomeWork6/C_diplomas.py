@@ -84,20 +84,20 @@ class Solver:
         min_size = max(min_width, min_height)
         max_size = max(max_width, max_height)
 
-        size = self.left_binary_search(left=min_size, right=max_size)
+        size = self.left_binary_search(lo=min_size, high=max_size)
 
         return size
 
-    def left_binary_search(self, left: int, right: int) -> int:
+    def left_binary_search(self, lo: int, high: int) -> int:
 
-        while left < right:
-            middle = (left + right) // 2
-            if self.check(middle):
-                right = middle
+        while lo < high:
+            mid = (lo + high) // 2
+            if self.check(mid):
+                high = mid
             else:
-                left = middle + 1
+                lo = mid + 1
 
-        return left
+        return lo
 
     def check(self, size: int) -> bool:
 

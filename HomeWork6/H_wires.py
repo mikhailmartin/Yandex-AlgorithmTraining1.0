@@ -79,18 +79,18 @@ class Solver:
         if not self.check(1):
             return 0
 
-        return self.right_binary_search(left=1, right=max(self.wires))
+        return self.right_binary_search(lo=1, hi=max(self.wires))
 
-    def right_binary_search(self, left: int, right: int) -> int:
+    def right_binary_search(self, lo: int, hi: int) -> int:
 
-        while left < right:
-            middle = (left + right + 1) // 2
-            if self.check(middle):
-                left = middle
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if self.check(mid):
+                lo = mid
             else:
-                right = middle - 1
+                hi = mid - 1
 
-        return left
+        return lo
 
     def check(self, length: int) -> bool:
 

@@ -62,19 +62,19 @@ class Solver:
         return cls(ProblemInput(n, x, y))
 
     def solve(self) -> int:
-        time = self.left_binary_search(left=self.fast, right=self.n * self.slow)
+        time = self.left_binary_search(lo=self.fast, hi=self.n * self.slow)
         return time
 
-    def left_binary_search(self, left: int, right: int) -> int:
+    def left_binary_search(self, lo: int, hi: int) -> int:
 
-        while left < right:
-            middle = (left + right) // 2
-            if self.check(middle):
-                right = middle
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if self.check(mid):
+                hi = mid
             else:
-                left = middle + 1
+                lo = mid + 1
 
-        return left
+        return lo
 
     def check(self, time: int) -> bool:
         # первую копию делаем всегда на быстром ксероксе

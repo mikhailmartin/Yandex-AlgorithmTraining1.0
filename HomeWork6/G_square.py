@@ -75,18 +75,18 @@ class Solver:
         return cls(ProblemInput(n, m, t))
 
     def solve(self) -> int:
-        return self.right_binary_search(left=0, right=self.min_size // 2)
+        return self.right_binary_search(lo=0, hi=self.min_size // 2)
 
-    def right_binary_search(self, left: int, right: int) -> int:
+    def right_binary_search(self, lo: int, hi: int) -> int:
 
-        while left < right:
-            middle = (left + right + 1) // 2
-            if self.check(middle):
-                left = middle
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if self.check(mid):
+                lo = mid
             else:
-                right = middle - 1
+                hi = mid - 1
 
-        return left
+        return lo
 
     def check(self, width: int) -> bool:
         return self.tile_count(width) <= self.t

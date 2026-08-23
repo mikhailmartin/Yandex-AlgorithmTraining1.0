@@ -113,20 +113,20 @@ class Solver:
 
         left = 0
         right = self.array[-1] - self.array[0]
-        result = self.left_binary_search(left=left, right=right)
+        result = self.left_binary_search(lo=left, hi=right)
 
         return result
 
-    def left_binary_search(self, left: int, right: int) -> int:
+    def left_binary_search(self, lo: int, hi: int) -> int:
 
-        while left < right:
-            middle = (left + right) // 2
-            if self.check(middle):
-                right = middle
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if self.check(mid):
+                hi = mid
             else:
-                left = middle + 1
+                lo = mid + 1
 
-        return left
+        return lo
 
     def check(self, max_discomfort: int) -> bool:
 

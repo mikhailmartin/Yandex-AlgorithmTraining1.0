@@ -62,6 +62,10 @@ class Solver:
         return self.data.n
 
     @property
+    def l(self) -> int:
+        return self.data.l
+
+    @property
     def arrays(self) -> list[list[int]]:
         return self.data.arrays
 
@@ -91,18 +95,43 @@ class Solver:
 
         result = []
         for i in range(self.n):
-            for j in range(i, self.n):
+            for j in range(i+1, self.n):
                 median = self.left_median_of_union(self.arrays[i], self.arrays[j])
                 result.append(median)
 
         return result
 
-    def left_median_of_union(self, left_array: list[int], right_array: list[int]) -> int:
+    def left_median_of_union(self, a_array: list[int], b_array: list[int]) -> int:
 
-        left = min(left_array[0], right_array[0])
-        right = max(left_array[-1], right_array[-1])
+        i = self.right_binary_search(lo=0, hi=self.l, check_params=(a_array, b_array))
+        j = self.l - i
 
-        return
+        a_left = a_array[i-1] if i > 0 else float("-inf")
+        b_left = b_array[j-1] if j > 0 else float("-inf")
+
+        return max(a_left, b_left)
+
+    def right_binary_search(self, lo: int, hi: int, check_params) -> int:
+
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if self.check(mid, check_params):
+                lo = mid
+            else:
+                hi = mid - 1
+
+        return lo
+
+    def check(self, mid: int, check_params) -> bool:
+
+        a_array, b_array = check_params
+        i = mid
+        j = self.l - i
+
+        a_left = a_array[i-1] if i > 0 else float("-inf")
+        b_right = b_array[j] if j < self.l else float("+inf")
+
+        return a_left <= b_right
 
 
 def main() -> None:
@@ -110,7 +139,8 @@ def main() -> None:
     solver = Solver.from_stdin()
     result = solver.solve()
 
-    print(result)
+    for answer in result:
+        print(answer)
 
 
 if __name__ == "__main__":

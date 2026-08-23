@@ -105,20 +105,20 @@ class Solver:
         max_protection2 = (self.area_width - self.module_size2) // 2
         max_protection = max(max_protection1, max_protection2)
 
-        protection = self.right_binary_search(left=0, right=max_protection)
+        protection = self.right_binary_search(lo=0, hi=max_protection)
 
         return protection
 
-    def right_binary_search(self, left: int, right: int) -> int:
+    def right_binary_search(self, lo: int, hi: int) -> int:
 
-        while left < right:
-            middle = (left + right + 1) // 2
-            if self.check(middle):
-                left = middle
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if self.check(mid):
+                lo = mid
             else:
-                right = middle - 1
+                hi = mid - 1
 
-        return left
+        return lo
 
     def check(self, protection: int) -> bool:
 

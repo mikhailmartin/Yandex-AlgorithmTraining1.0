@@ -90,20 +90,20 @@ class Solver:
     def solve(self) -> int:
 
         amount = self.twos + self.threes + self.fours
-        fives = self.left_binary_search(left=0, right=amount)
+        fives = self.left_binary_search(lo=0, hi=amount)
 
         return fives
 
-    def left_binary_search(self, left: int, right: int) -> int:
+    def left_binary_search(self, lo: int, hi: int) -> int:
 
-        while left < right:
-            middle = (left + right) // 2
-            if self.check(middle):
-                right = middle
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if self.check(mid):
+                hi = mid
             else:
-                left = middle + 1
+                lo = mid + 1
 
-        return left
+        return lo
 
     def check(self, fives: int) -> bool:
         amount = self.twos * 2 + self.threes * 3 + self.fours * 4 + fives * 5
