@@ -14,7 +14,7 @@
 чем менее различается рост членов этой бригады.
 
 Числом неудобства бригады будем называть разность между ростом самого высокого и
-ростом самого низкого членов этой бригады (если в бригаде только один человек,
+ростом самого низкого из членов этой бригады (если в бригаде только один человек,
 то эта разница равна 0). Классный руководитель решил сформировать бригады так,
 чтобы максимальное из чисел неудобства сформированных бригад было минимально.
 Помогите ему в этом!
@@ -39,7 +39,7 @@
 
 
 Формат вывода:
-Выведите одно число — наименьше возможное значение максимального числа
+Выведите одно число — наименьшее возможное значение максимального числа
 неудобства сформированных бригад.
 
 
@@ -55,3 +55,104 @@ input: 225
 input: 160
 output: 30
 """
+from dataclasses import dataclass
+from typing import Self
+
+
+@dataclass(frozen=True)
+class ProblemInput:
+    n: int
+    r: int
+    c: int
+    array: list[int]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @property
+    def n(self) -> int:
+        return self.data.n
+
+    @property
+    def r(self) -> int:
+        return self.data.r
+
+    @property
+    def c(self) -> int:
+        return self.data.c
+
+    @property
+    def array(self) -> list[int]:
+        return self.data.array
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        n, r, c = map(int, input().split())
+        array = []
+        for _ in range(n):
+            array.append(int(input()))
+
+        return cls(ProblemInput(n, r, c, array))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        n, r, c = map(int, lines[0].split())
+        array = []
+        for i in range(n):
+            array.append(int(lines[i+1]))
+
+        return cls(ProblemInput(n, r, c, array))
+
+    def solve(self) -> int:
+
+        self.array.sort()
+
+        left = 0
+        right = self.array[-1] - self.array[0]
+        result = self.left_binary_search(left=left, right=right)
+
+        return result
+
+    def left_binary_search(self, left: int, right: int) -> int:
+
+        while left < right:
+            middle = (left + right) // 2
+            if self.check(middle):
+                right = middle
+            else:
+                left = middle + 1
+
+        return left
+
+    def check(self, max_discomfort: int) -> bool:
+
+        # считаем количество возможных бригад с заданным максимальным неудобством
+        i = 0
+        count = 0
+        while i < self.n - self.c + 1:
+            left = self.array[i]
+            right = self.array[i + self.c - 1]
+            curr_discomfort = right - left
+            if curr_discomfort <= max_discomfort:
+                count += 1
+                i += self.c
+            else:
+                i += 1
+
+        return self.r <= count
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
