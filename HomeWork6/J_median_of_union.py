@@ -42,3 +42,76 @@ output: 7
 output: 10
 output: 9
 """
+from dataclasses import dataclass
+from typing import Self
+
+
+@dataclass(frozen=True)
+class ProblemInput:
+    n: int
+    l: int
+    arrays: list[list[int]]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @property
+    def n(self) -> int:
+        return self.data.n
+
+    @property
+    def arrays(self) -> list[list[int]]:
+        return self.data.arrays
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        n, l = map(int, input().split())
+        arrays = []
+        for _ in range(n):
+            array = list(map(int, input().split()))
+            arrays.append(array)
+
+        return cls(ProblemInput(n, l, arrays))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        n, l = map(int, lines[0].split())
+        arrays = []
+        for i in range(n):
+            array = list(map(int, lines[i+1].split()))
+            arrays.append(array)
+
+        return cls(ProblemInput(n, l, arrays))
+
+    def solve(self) -> list[int]:
+
+        result = []
+        for i in range(self.n):
+            for j in range(i, self.n):
+                median = self.left_median_of_union(self.arrays[i], self.arrays[j])
+                result.append(median)
+
+        return result
+
+    def left_median_of_union(self, left_array: list[int], right_array: list[int]) -> int:
+
+        left = min(left_array[0], right_array[0])
+        right = max(left_array[-1], right_array[-1])
+
+        return
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
