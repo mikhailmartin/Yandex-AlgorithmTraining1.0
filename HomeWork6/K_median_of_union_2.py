@@ -25,9 +25,10 @@
 
 Каждая последовательность определяется пятью целочисленными параметрами:
 x_1, d_1, a, c, m. Элементы последовательности вычисляются по следующим формулам:
-x_1 нам задано, а для всех i от 2 до L: x_i = x_i–1+d_i–1. Последовательность
-d_i определяется следующим образом: d_1 нам задано, а для i ≥ 2 d_i = ((a*d_i–1+c) mod m),
-где mod – операция получения остатка от деления (a*d_i–1+c) на m.
+x_1 нам задано, а для всех i от 2 до L: x_i = x_{i–1} + d_{i–1}.
+Последовательность d_i определяется следующим образом: d_1 нам задано,
+а для i ≥ 2 d_i = ((a * d_{i–1} + c) mod m), где mod – операция получения
+остатка от деления (a * d_{i–1} + c) на m.
 
 Для всех последовательностей выполнены следующие ограничения: 1 ≤ m ≤ 40_000,
 0 ≤ a < m, 0 ≤ c < m, 0 ≤ d_1 < m. Гарантируется, что все члены всех
@@ -58,3 +59,119 @@ output: 7
 output: 10
 output: 9
 """
+from array import array
+from dataclasses import dataclass
+from typing import Self
+
+
+@dataclass(frozen=True)
+class ProblemInput:
+    n: int
+    l: int
+    arrs: list[array]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @property
+    def n(self) -> int:
+        return self.data.n
+
+    @property
+    def l(self) -> int:
+        return self.data.l
+
+    @property
+    def arrs(self) -> list[array]:
+        return self.data.arrs
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        n, l = map(int, input().split())
+        arrs = []
+        for _ in range(n):
+            x1, d1, a, c, m = list(map(int, input().split()))
+            arr = array("i", [0] * l)
+            arr[0] = x1
+            d = d1
+            for i in range(1, l):
+                arr[i] = arr[i-1] + d
+                d = (a * d + c) % m
+            arrs.append(arr)
+
+        return cls(ProblemInput(n, l, arrs))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        n, l = map(int, lines[0].split())
+        arrs = []
+        for i in range(n):
+            x1, d1, a, c, m = list(map(int, lines[i + 1].split()))
+            arr = array("i", [0] * l)
+            arr[0] = x1
+            d = d1
+            for j in range(1, l):
+                arr[j] = arr[j-1] + d
+                d = (a * d + c) % m
+            arrs.append(arr)
+
+        return cls(ProblemInput(n, l, arrs))
+
+    def solve(self) -> list[int]:
+
+        result = []
+        for i in range(self.n):
+            for j in range(i+1, self.n):
+                median = self.left_median_of_union(self.arrs[i], self.arrs[j])
+                result.append(median)
+
+        return result
+
+    def left_median_of_union(self, a_arr: array, b_arr: array) -> int:
+
+        i = self.right_binary_search(lo=0, hi=self.l, check_params=(a_arr, b_arr))
+        j = self.l - i
+
+        a_left = a_arr[i - 1] if i > 0 else float("-inf")
+        b_left = b_arr[j - 1] if j > 0 else float("-inf")
+
+        return max(a_left, b_left)
+
+    def right_binary_search(self, lo: int, hi: int, check_params) -> int:
+
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if self.check(mid, check_params):
+                lo = mid
+            else:
+                hi = mid - 1
+
+        return lo
+
+    def check(self, mid: int, check_params) -> bool:
+
+        a_arr, b_arr = check_params
+        i = mid
+        j = self.l - i
+
+        a_left = a_arr[i-1] if i > 0 else float("-inf")
+        b_right = b_arr[j] if j < self.l else float("+inf")
+
+        return a_left <= b_right
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    for answer in result:
+        print(answer)
+
+
+if __name__ == "__main__":
+    main()
