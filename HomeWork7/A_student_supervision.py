@@ -46,3 +46,91 @@ input: 1 1
 input: 1 2
 output: 8
 """
+from dataclasses import dataclass
+from typing import Self
+
+
+@dataclass(frozen=True)
+class ProblemInput:
+    n: int
+    m: int
+    intervals: list[tuple[int, int]]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @property
+    def n(self) -> int:
+        return self.data.n
+
+    @property
+    def m(self) -> int:
+        return self.data.m
+
+    @property
+    def intervals(self) -> list[tuple[int, int]]:
+        return self.data.intervals
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        n, m = map(int, input().split())
+        intervals = []
+        for _ in range(m):
+            b, e = map(int, input().split())
+            intervals.append((b, e))
+
+        return cls(ProblemInput(n, m, intervals))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        n, m = map(int, lines[0].split())
+        intervals = []
+        for i in range(m):
+            b, e = map(int, lines[i+1].split())
+            intervals.append((b, e))
+
+        return cls(ProblemInput(n, m, intervals))
+
+    def solve(self) -> int:
+
+        events = []
+        for begin, end in self.intervals:
+            events.append((begin, 1))
+            events.append((end + 1, -1))
+        events.sort()
+
+        supervised = 0
+        supervisors = 0
+        prev_pos = 0
+
+        i = 0
+        n_events = len(events)
+        while i < n_events:
+            curr_pos = events[i][0]
+
+            if supervisors > 0:
+                supervised += curr_pos - prev_pos
+
+            while i < n_events and events[i][0] == curr_pos:
+                supervisors += events[i][1]
+                i += 1
+
+            prev_pos = curr_pos
+
+        return self.n - supervised
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
