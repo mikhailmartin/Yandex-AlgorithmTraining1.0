@@ -39,3 +39,75 @@ input: 11 1 12 2
 output: 1
 output: 1 1 1 1
 """
+from collections import deque
+from dataclasses import dataclass
+from enum import IntEnum
+from typing import Self
+
+
+class EventType(IntEnum):
+    BEGIN = 0
+    END = 1
+
+
+@dataclass
+class ProblemInput:
+    n: int
+    d: int
+    students: list[int]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        n, d = map(int, input().split())
+        students = list(map(int, input().split()))
+
+        return cls(ProblemInput(n, d, students))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        n, d = map(int, lines[0].split())
+        students = list(map(int, lines[1].split()))
+
+        return cls(ProblemInput(n, d, students))
+
+    def solve(self) -> tuple[int, list[int]]:
+
+        events = []
+        for i, student in enumerate(self.data.students):
+            events.append((student, EventType.BEGIN, i))
+            events.append((student + self.data.d, EventType.END, i))
+        events.sort()
+
+        available = deque()
+        result = [0] * self.data.n
+        next_variant = 1
+        for _, event_type, i in events:
+            if event_type == EventType.BEGIN:
+                if not available:
+                    available.append(next_variant)
+                    next_variant += 1
+                result[i] = available.popleft()
+            elif event_type == EventType.END:
+                available.append(result[i])
+
+        return max(result), result
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    print(result[0])
+    print(" ".join(map(str, result[1])))
+
+
+if __name__ == "__main__":
+    main()
