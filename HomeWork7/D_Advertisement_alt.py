@@ -84,41 +84,127 @@ output: 2 1 22
 
 3. Объявление услышат лишь 2 из 3-х покупателей.
 """
-n = int(input())
-events = []
-for i in range(n):
-    nowin, nowout = map(int, input().split())
-    if nowout - nowin >= 5:
-        events.append((nowin, -1, i))
-        events.append((nowout - 5, 1, i))
-events.sort()
-if len(events) == 0:
-    print(0, 10, 20)
-elif len(events) == 2:
-    print(1, events[0][0], events[0][0] + 10)
-else:
-    bestans = 0
-    firstbest, secondbest = 0, 0
-    firstad = set()
-    for i in range(len(events)):
-        event1 = events[i]
-        if event1[1] == -1:
-            firstad.add(event1[2])
-        if len(firstad) > bestans:
-            bestans = len(firstad)
-            firstbest = event1[0]
-            secondbest = event1[0] + 5
-        secondadcnt = 0
-        for j in range(i + 1, len(events)):
-            event2 = events[j]
-            if event2[1] == -1 and event2[2] not in firstad:
-                secondadcnt += 1
-            if event2[0] - 5 >= event1[0] and len(firstad) + secondadcnt > bestans:
-                bestans = len(firstad) + secondadcnt
-                firstbest = event1[0]
-                secondbest = event2[0]
-            if event2[1] == 1 and event2[2] not in firstad:
-                secondadcnt -= 1
-        if event1[1] == 1:
-            firstad.remove(event1[2])
-    print(bestans, firstbest, secondbest)
+from dataclasses import dataclass
+from enum import IntEnum
+from typing import Self
+
+
+class EventType(IntEnum):
+    IN = 0
+    START = 1
+    END = 2
+    OUT = 3
+
+
+@dataclass
+class ProblemInput:
+    n: int
+    customers: list[tuple[int, int]]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput, promo: int = 5) -> None:
+        self.data = data
+        self.promo = promo
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        n = int(input())
+        customers = []
+        for _ in range(n):
+            time_in, time_out = map(int, input().split())
+            customers.append((time_in, time_out))
+
+        return cls(ProblemInput(n, customers))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        n = int(lines[0])
+        customers = []
+        for i in range(n):
+            time_in, time_out = map(int, lines[i+1].split())
+            customers.append((time_in, time_out))
+
+        return cls(ProblemInput(n, customers))
+
+    def solve(self) -> tuple[int, int, int]:
+
+        events = []
+        seen = set()
+        for i, (time_in, time_out) in enumerate(self.data.customers):
+            if time_out - time_in >= self.promo:
+                events.append((time_in, EventType.IN, i))
+                events.append((time_out, EventType.OUT, i))
+
+                time_start = time_in
+                time_end = time_in + self.promo
+                if time_start not in seen:
+                    events.append((time_start, EventType.START, i))
+                    events.append((time_end, EventType.END, i))
+                    seen.add(time_start)
+
+                time_start = time_out - self.promo
+                time_end = time_out
+                if time_start not in seen:
+                    events.append((time_start, EventType.START, i))
+                    events.append((time_end, EventType.END, i))
+                    seen.add(time_start)
+        events.sort()
+
+        curr_active = 0
+        start_active = dict()
+        time_active: dict[int, int] = dict()
+        for time, event_type, i in events:
+            if event_type == EventType.OUT:
+                curr_active &= ~(1 << i)
+            elif event_type == EventType.IN:
+                curr_active |= 1 << i
+            elif event_type == EventType.START:
+                start_active[time] = curr_active
+            elif event_type == EventType.END:
+                start_time = time - self.promo
+                before_active = start_active[start_time]
+                time_active[start_time] = before_active & curr_active
+        del events
+
+        time_active: list[tuple[int, int]] = list(time_active.items())
+        n = len(time_active)
+
+        max_customers = 0
+        start1 = 1
+        start2 = 1 + self.promo
+        for i in range(n):
+            time1, active1 = time_active[i]
+
+            if active1.bit_count() > max_customers:
+                max_customers = active1.bit_count()
+                start1 = time1
+                start2 = time1 + self.promo
+
+            for j in range(i+1, n):
+                time2, active2 = time_active[j]
+
+                if abs(time1 - time2) < self.promo:
+                    continue
+
+                customers = active1 | active2
+                if customers.bit_count() > max_customers:
+                    max_customers = customers.bit_count()
+                    start1 = time1
+                    start2 = time2
+
+        return max_customers, *sorted([start1, start2])
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    print(*result)
+
+
+if __name__ == "__main__":
+    main()
