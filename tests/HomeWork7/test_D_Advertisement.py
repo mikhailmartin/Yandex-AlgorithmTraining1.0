@@ -20,7 +20,7 @@ from HomeWork7.D_Advertisement_alt import Solver
                 "1 6",
             ],
             (3, 1, 6),
-            id="test1"
+            id="example1"
         ),
         param(
             [
@@ -28,7 +28,7 @@ from HomeWork7.D_Advertisement_alt import Solver
                 "1 10",
             ],
             (1, 1, 6),
-            id="test2",
+            id="example2",
         ),
         param(
             [
@@ -38,7 +38,7 @@ from HomeWork7.D_Advertisement_alt import Solver
                 "21 30",
             ],
             (2, 1, 11),
-            id="test3",
+            id="example3",
         ),
         param(
             [

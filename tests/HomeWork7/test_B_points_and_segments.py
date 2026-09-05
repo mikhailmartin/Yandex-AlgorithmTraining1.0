@@ -20,7 +20,7 @@ from HomeWork7.B_points_and_segments import Solver
                 "1 6",
             ],
             [2, 0],
-            id="test1"
+            id="example1"
         ),
         param(
             [

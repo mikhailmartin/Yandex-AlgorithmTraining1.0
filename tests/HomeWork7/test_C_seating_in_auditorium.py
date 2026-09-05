@@ -17,7 +17,7 @@ from HomeWork7.C_seating_in_auditorium import Solver
                 "11 1 12 2",
             ],
             (2, [1, 1, 2, 2]),
-            id="test1"
+            id="example1"
         ),
         param(
             [
@@ -25,7 +25,7 @@ from HomeWork7.C_seating_in_auditorium import Solver
                 "11 1 12 2",
             ],
             (1, [1, 1, 1, 1]),
-            id="test2"
+            id="example2"
         ),
     ],
 )

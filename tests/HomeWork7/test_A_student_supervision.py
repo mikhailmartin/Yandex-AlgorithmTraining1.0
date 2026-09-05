@@ -13,37 +13,13 @@ from HomeWork7.A_student_supervision import Solver
     [
         param(
             [
-                "2 1",
-                "0 0",
-            ],
-            1,
-            id="example1"
-        ),
-        param(
-            [
-                "2 1",
-                "1 1",
-            ],
-            1,
-            id="example2"
-        ),
-        param(
-            [
-                "2 1",
-                "0 1",
-            ],
-            0,
-            id="example3"
-        ),
-        param(
-            [
                 "10 3",
                 "1 3",
                 "2 4",
                 "9 9",
             ],
             5,
-            id="test1",
+            id="example1",
         ),
         param(
             [
@@ -52,7 +28,31 @@ from HomeWork7.A_student_supervision import Solver
                 "1 2",
             ],
             8,
-            id="test2",
+            id="example2",
+        ),
+        param(
+            [
+                "2 1",
+                "0 0",
+            ],
+            1,
+            id="custom1"
+        ),
+        param(
+            [
+                "2 1",
+                "1 1",
+            ],
+            1,
+            id="custom2"
+        ),
+        param(
+            [
+                "2 1",
+                "0 1",
+            ],
+            0,
+            id="custom3"
         ),
     ],
 )
