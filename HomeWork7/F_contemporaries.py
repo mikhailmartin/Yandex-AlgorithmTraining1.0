@@ -65,3 +65,103 @@ input: 1 1 1 1 1 10
 input: 2 1 1910 1 1 1928
 output: 0
 """
+from dataclasses import dataclass
+from datetime import date
+from enum import IntEnum
+from typing import Self
+
+
+class EventType(IntEnum):
+    END = 0
+    START = 1
+
+
+@dataclass
+class ProblemInput:
+    n: int
+    persons: list[tuple[int, int, int, int, int, int]]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        n = int(input())
+        persons = []
+        for _ in range(n):
+            d_born, m_born, y_born,  d_dead, m_dead, y_dead = map(int, input().split())
+            persons.append((d_born, m_born, y_born,  d_dead, m_dead, y_dead))
+
+        return cls(ProblemInput(n, persons))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        n = int(lines[0])
+        persons = []
+        for i in range(n):
+            d_born, m_born, y_born, d_dead, m_dead, y_dead = map(int, lines[i+1].split())
+            persons.append((d_born, m_born, y_born, d_dead, m_dead, y_dead))
+
+        return cls(ProblemInput(n, persons))
+
+    def solve(self) -> list[frozenset[int]]:
+
+        events = self._build_events()
+
+        result = []
+        contemporaries = set()
+        for dt, event_type, idx in events:
+            if event_type == EventType.START:
+                contemporaries.add(idx)
+            elif event_type == EventType.END:
+                c = frozenset(contemporaries)
+                if not any(c.issubset(r) for r in result):
+                    result.append(c)
+                contemporaries.remove(idx)
+
+        return result or [frozenset([0])]
+
+    def _build_events(self) -> list[tuple[date, EventType, int]]:
+
+        events = []
+        for idx, person in enumerate(self.data.persons, 1):
+            d_birth, m_birth, y_birth, d_death, m_death, y_death = person
+
+            birth_dt = date(y_birth, m_birth, d_birth)
+            death_dt = date(y_death, m_death, d_death)
+
+            yo18_dt = self._birthday(birth_dt, 18)
+            yo80_dt = self._birthday(birth_dt, 80)
+
+            if death_dt <= yo18_dt:
+                continue
+
+            events.append((yo18_dt, EventType.START, idx))
+            events.append((min(yo80_dt, death_dt), EventType.END, idx))
+        events.sort()
+
+        return events
+
+    @staticmethod
+    def _birthday(dt: date, age: int) -> date:
+        try:
+            return date(dt.year + age, dt.month, dt.day)
+        except ValueError:
+            return date(dt.year + age, 3, 1)
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    for answer in result:
+        print(*answer)
+
+
+if __name__ == "__main__":
+    main()
