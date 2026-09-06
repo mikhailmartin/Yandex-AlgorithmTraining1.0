@@ -44,3 +44,98 @@ input: 1 1 1
 output: 1
 output: 1 1
 """
+import bisect
+from collections import deque
+from dataclasses import dataclass
+from enum import IntEnum
+from typing import Self
+
+
+class EventType(IntEnum):
+    READY = 0
+    RESTED = 1
+
+
+@dataclass
+class ProblemInput:
+    m: int
+    n: int
+    helpers: list[tuple[int, int, int]]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @property
+    def helpers(self) -> list[tuple[int, int, int]]:
+        return self.data.helpers
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+
+        m, n = map(int, input().split())
+        helpers = []
+        for _ in range(n):
+            t, z, y = map(int, input().split())
+            helpers.append((t, z, y))
+
+        return cls(ProblemInput(m, n, helpers))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+
+        m, n = map(int, lines[0].split())
+        helpers = []
+        for i in range(n):
+            t, z, y = map(int, lines[i+1].split())
+            helpers.append((t, z, y))
+
+        return cls(ProblemInput(m, n, helpers))
+
+    def solve(self):
+
+        if self.data.m == 0:
+            return 0, [0] * self.data.n
+
+        events = []
+        for idx, (t, z, y) in enumerate(self.helpers):
+            events.append((t, EventType.READY, idx))
+        events.sort()
+        events = deque(events)
+
+        total = 0
+        counter = [0] * self.data.n
+        while events:
+            time, event_type, idx = events.popleft()
+            if event_type == EventType.READY:
+                total += 1
+                counter[idx] += 1
+
+                if total == self.data.m:
+                    break
+
+                t, z, y = self.helpers[idx]
+                if counter[idx] % z == 0:
+                    bisect.insort(events, (time + y, EventType.RESTED, idx))
+                else:
+                    bisect.insort(events, (time + t, EventType.READY, idx))
+
+            elif event_type == EventType.RESTED:
+                t, z, y = self.helpers[idx]
+                bisect.insort(events, (time + t, EventType.READY, idx))
+
+        return time, counter
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    print(result[0])
+    print(*result[1])
+
+
+if __name__ == "__main__":
+    main()
