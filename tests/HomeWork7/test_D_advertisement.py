@@ -5,7 +5,7 @@ sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork7.D_Advertisement_alt import Solver
+from HomeWork7.D_advertisement_alt import Solver
 
 
 @pytest.mark.parametrize(
