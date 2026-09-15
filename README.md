@@ -99,3 +99,8 @@
    - ❌ J. НГУ-стройка
 
 </details>
+<details><summary>❌ HomeWork8 «Деревья»</summary>
+
+
+
+</details>
