@@ -74,3 +74,102 @@ input: 2 03:58 3 09:00
 input: 3 14:59 2 21:13
 output: 2
 """
+from dataclasses import dataclass
+from enum import IntEnum
+from typing import Self
+
+
+class EventType(IntEnum):
+    IN = 0
+    OUT = 1
+
+
+@dataclass
+class ProblemInput:
+    n: int
+    m: int
+    routes: list[tuple[str, str, str, str]]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+        n, m = map(int, input().split())
+        routes = []
+        for _ in range(m):
+            f, x, g, y = input().split()
+            routes.append((f, x, g, y))
+        return cls(ProblemInput(n, m, routes))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+        n, m = map(int, lines[0].split())
+        routes = []
+        for i in range(m):
+            f, x, g, y = lines[i+1].split()
+            routes.append((f, x, g, y))
+        return cls(ProblemInput(n, m, routes))
+
+    def solve(self) -> int:
+
+        events = []
+        midnight_count = 0
+        for src, time_out, dst, time_in in self.data.routes:
+            src, dst = int(src), int(dst)
+            time_out = self.convert(time_out)
+            time_in = self.convert(time_in)
+
+            events.append((time_out, EventType.OUT, src))
+            events.append((time_in, EventType.IN, dst))
+
+            if time_in < time_out:
+                midnight_count += 1
+        events.sort()
+
+        # моделируем первые сутки
+        bus_counter = [0] * (self.data.n + 1)
+        balance = [0] * (self.data.n + 1)
+        for time, event_type, city in events:
+            if event_type == EventType.IN:
+                bus_counter[city] += 1
+                balance[city] += 1
+            elif event_type == EventType.OUT:
+                if bus_counter[city] > 0:
+                    bus_counter[city] -= 1
+                balance[city] -= 1
+
+        if any(count != 0 for count in balance):
+            return -1
+
+        # моделируем вторые сутки
+        for time, event_type, city in events:
+            if event_type == EventType.IN:
+                bus_counter[city] += 1
+            elif event_type == EventType.OUT:
+                bus_counter[city] -= 1
+
+        result = midnight_count
+        for count in bus_counter:
+            result += count
+
+        return result
+
+    @staticmethod
+    def convert(time: str) -> int:
+        hh, mm = map(int, time.split(":"))
+        return hh * 60 + mm
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
