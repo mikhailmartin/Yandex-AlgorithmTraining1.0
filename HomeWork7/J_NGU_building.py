@@ -1,5 +1,5 @@
 """
-NGU-стройка
+НГУ-стройка
 
 Ограничение времени - 4 секунды
 Ограничение памяти - 64Mb
@@ -18,7 +18,7 @@ NGU-стройка
 
 Подрядчики известили НГУ, что они готовы к определённому сроку изготовить блоки
 и установить их. Для каждого блока фиксировано место его возможного монтажа,
-совпадающее по размерам с этим блоком. Места выбраны так, что ребра блоков
+совпадающее по размерам с этим блоком. Места выбраны так, что рёбра блоков
 параллельны осям координат. Места монтажа блоков не пересекаются.
 
 По техническим условиям перекрытие должно состоять из такого набора склеенных
@@ -66,3 +66,107 @@ input: 0 0 0 10 5 5
 input: 0 5 5 10 10 10
 output: NO
 """
+from dataclasses import dataclass
+from enum import IntEnum
+from typing import Self
+
+
+class EventType(IntEnum):
+    OUT = 0
+    IN = 1
+
+
+@dataclass
+class ProblemInput:
+    n: int
+    w: int
+    l: int
+    blocks: list[tuple[int, int, int, int, int, int]]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+        n, w, l = map(int, input().split())
+        blocks = []
+        for _ in range(n):
+            x1, y1, z1, x2, y2, z2 = map(int, input().split())
+            blocks.append((x1, y1, z1, x2, y2, z2))
+        return cls(ProblemInput(n, w, l, blocks))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+        n, w, l = map(int, lines[0].split())
+        blocks = []
+        for i in range(n):
+            x1, y1, z1, x2, y2, z2 = map(int, lines[i+1].split())
+            blocks.append((x1, y1, z1, x2, y2, z2))
+        return cls(ProblemInput(n, w, l, blocks))
+
+    def solve(self) -> list[int]:
+
+        events = []
+        for i, (x1, y1, z1, x2, y2, z2) in enumerate(self.data.blocks, 1):
+            area = (x2 - x1) * (y2 - y1)
+            events.append((z1, EventType.IN, area, i))
+            events.append((z2, EventType.OUT, area, i))
+        events.sort()
+
+        # за первый проход выясняем, существует ли решение
+        total_area = self.data.w * self.data.l
+        curr_area = 0
+        success = False
+        count = 0
+        min_count = 10 ** 5 + 1
+        for z, event_type, area, i in events:
+            if event_type == EventType.IN:
+                curr_area += area
+                count += 1
+                if curr_area == total_area:
+                    success = True
+                    min_count = min(min_count, count)
+            elif event_type == EventType.OUT:
+                curr_area -= area
+                count -= 1
+
+        if not success:
+            return []
+
+        # за второй проход ищем набор блоков
+        curr_area = 0
+        count = 0
+        blocks = set()
+        for z, event_type, area, i in events:
+            if event_type == EventType.IN:
+                curr_area += area
+                count += 1
+                blocks.add(i)
+                if curr_area == total_area and count == min_count:
+                    break
+            elif event_type == EventType.OUT:
+                curr_area -= area
+                count -= 1
+                blocks.remove(i)
+
+        return sorted(blocks)
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    n = len(result)
+    if n == 0:
+        print("NO")
+    else:
+        print("YES")
+        print(n)
+        print("\n".join(map(str, result)))
+
+
+if __name__ == "__main__":
+    main()

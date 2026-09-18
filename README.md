@@ -85,7 +85,7 @@
    - ✔️ K. Медиана объединения-2
 
 </details>
-<details open="true"><summary>❌ HomeWork7 «Сортировка событий»</summary>
+<details><summary>✔️ HomeWork7 «Сортировка событий»</summary>
 
    - ✔️ A. Наблюдение за студентами
    - ✔️ B. Точки и отрезки
@@ -96,10 +96,10 @@
    - ✔️ G. Детский праздник
    - ✔️ H. Охрана
    - ✔️ I. Автобусы
-   - ❌ J. НГУ-стройка
+   - ✔️ J. НГУ-стройка
 
 </details>
-<details><summary>❌ HomeWork8 «Деревья»</summary>
+<details open="true"><summary>❌ HomeWork8 «Деревья»</summary>
 
 
 
