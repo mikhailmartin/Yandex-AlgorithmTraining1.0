@@ -85,6 +85,19 @@ class BinarySearchTree:
         if node.right:
             self._sorted(node.right, lst)
 
+    def leafs(self) -> list[int]:
+        result = []
+        self._leafs(self.tree, result)
+        return result
+
+    def _leafs(self, node: TreeNode, lst: list[int]) -> None:
+        if node.left:
+            self._leafs(node.left, lst)
+        if node.right:
+            self._leafs(node.right, lst)
+        if not node.left and not node.right:
+            lst.append(node.value)
+
 
 class Solver:
     def __init__(self, data: ProblemInput) -> None:
@@ -106,9 +119,9 @@ class Solver:
         for num in self.data.sequence[:-1]:
             tree.add_node(num)
 
-        sorted_values = tree.sorted()
+        sorted_leafs = tree.leafs()
 
-        return sorted_values
+        return sorted_leafs
 
 
 def main() -> None:
