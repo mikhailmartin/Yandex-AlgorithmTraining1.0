@@ -51,3 +51,76 @@ output: Peter_III 3
 import sys
 sys.setrecursionlimit(100000)
 """
+from collections import defaultdict
+from dataclasses import dataclass
+from typing import Self
+
+import sys
+sys.setrecursionlimit(100000)
+
+
+@dataclass(frozen=True)
+class ProblemInput:
+    n: int
+    persons: list[tuple[str, str]]
+
+
+class Solver:
+    def __init__(self, data: ProblemInput) -> None:
+        self.data = data
+
+    @classmethod
+    def from_stdin(cls) -> Self:
+        n = int(input())
+        persons = []
+        for _ in range(n-1):
+            child, parent = input().split()
+            persons.append((child, parent))
+        return cls(ProblemInput(n, persons))
+
+    @classmethod
+    def from_strings(cls, lines: list[str]) -> Self:
+        n = int(lines[0])
+        persons = []
+        for i in range(n-1):
+            child, parent = lines[i+1].split()
+            persons.append((child, parent))
+        return cls(ProblemInput(n, persons))
+
+    def solve(self) -> list[tuple[str, int]]:
+
+        all_persons = set()
+        all_children = set()
+        child_of = defaultdict(list)
+        for child, parent in self.data.persons:
+            all_persons.add(child)
+            all_persons.add(parent)
+            all_children.add(child)
+            child_of[parent].append(child)
+
+        root = (all_persons - all_children).pop()
+        counter = dict()
+
+        def foo(prnt: str) -> int:
+            count = 0
+            for ch in child_of[prnt]:
+                count += 1 + foo(ch)
+            counter[prnt] = count
+            return counter[prnt]
+
+        foo(root)
+
+        return sorted(counter.items())
+
+
+def main() -> None:
+
+    solver = Solver.from_stdin()
+    result = solver.solve()
+
+    for answer in result:
+        print(*answer)
+
+
+if __name__ == "__main__":
+    main()
