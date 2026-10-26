@@ -5,7 +5,7 @@ sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork6.G_square import Solver
+from HomeWork6.G_square.main import main
 
 
 @pytest.mark.parametrize(
@@ -14,15 +14,14 @@ from HomeWork6.G_square import Solver
         param(
             ["6", "7", "38"],
             2,
-            id="тест 1",
+            id="example",
         ),
         param(
             ["1600000000", "1450000000", "2310000003500000805"],
             700000007,
-            id="тест 17",
+            id="test17",
         ),
     ],
 )
-def test_solve(lines, expected):
-    solver = Solver.from_strings(lines)
-    assert solver.solve() == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

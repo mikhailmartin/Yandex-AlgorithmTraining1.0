@@ -1,17 +1,19 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork3.F_alien_genome import get_proximity
+from HomeWork3.F_alien_genome.main import main
 
 
 @pytest.mark.parametrize(
-    ("firt_genome", "second_genome", "expected"),
+    ("lines", "expected"),
     [
-        param("ABBACAB", "BCABB", 4)
+        param(["ABBACAB", "BCABB"], 4),
     ],
 )
-def test_F_get_proximity(firt_genome, second_genome, expected):
-
-    assert get_proximity(firt_genome, second_genome) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

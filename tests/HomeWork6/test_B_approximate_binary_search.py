@@ -1,11 +1,12 @@
 import os
 import sys
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork6.B_approximate_binary_search import Solver
+from HomeWork6.B_approximate_binary_search.main import main
 
 
 @pytest.mark.parametrize(
@@ -18,6 +19,7 @@ from HomeWork6.B_approximate_binary_search import Solver
                 "2 4 8 1 6",
             ],
             [1, 3, 7, 1, 5],
+            id="example1",
         ),
         param(
             [
@@ -26,6 +28,7 @@ from HomeWork6.B_approximate_binary_search import Solver
                 "1 2 3 4 5 6 7 8 63 64 65",
             ],
             [1, 1, 4, 4, 4, 4, 8, 8, 8, 8, 120],
+            id="example2",
         ),
         param(
             [
@@ -34,9 +37,9 @@ from HomeWork6.B_approximate_binary_search import Solver
                 "0 3 7 -17 23 11 0 11 15 7",
             ],
             [1, 3, 8, -5, 16, 12, 1, 12, 16, 8],
+            id="example3",
         ),
     ],
 )
-def test_solve(lines, expected):
-    solver = Solver.from_strings(lines)
-    assert solver.solve() == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

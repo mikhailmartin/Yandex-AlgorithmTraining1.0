@@ -5,7 +5,7 @@ sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork7.H_security import Solver
+from HomeWork7.H_security.main import main
 
 
 @pytest.mark.parametrize(
@@ -18,10 +18,9 @@ from HomeWork7.H_security import Solver
                 "2 0 3000 2700 10000",
             ],
             ["Wrong Answer", "Accepted"],
-            id="example1"
+            id="example1",
         ),
     ],
 )
-def test_solve(lines, expected):
-    solver = Solver.from_strings(lines)
-    assert solver.solve() == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

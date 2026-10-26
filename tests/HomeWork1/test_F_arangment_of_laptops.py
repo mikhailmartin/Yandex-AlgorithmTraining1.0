@@ -1,19 +1,21 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork1.F_arangment_of_laptops import main
+from HomeWork1.F_arangment_of_laptops.main import main
 
 
 @pytest.mark.parametrize(
-    ("a1", "b1", "a2", "b2", "expected"),
+    ("lines", "expected"),
     [
-        param(10, 2, 2, 10, (10, 4)),
-        param(5, 7, 3, 2, (9, 5)),
-        param(3, 2, 5, 7, (9, 5)),
+        param(["10 2 2 10"], (10, 4)),
+        param(["5 7 3 2"], (9, 5)),
+        param(["3 2 5 7"], (9, 5)),
     ],
 )
-def test_F_arangment_of_laptops(a1, b1, a2, b2, expected):
-
-    assert main(a1, b1, a2, b2) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

@@ -1,19 +1,21 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork2.H_largest_product_of_three_numbers import main
+from HomeWork2.H_largest_product_of_three_numbers.main import main
 
 
 @pytest.mark.parametrize(
-    ("numbers", "expected"),
+    ("lines", "expected"),
     [
-        param([3, 5, 1, 7, 9, 0, 9, -3, 10], (10, 9, 9)),
-        param([-5, -30000, -12], (-5, -12, -30000)),
-        param([1, 2, 3], (3, 2, 1)),
+        param(["3 5 1 7 9 0 9 -3 10"], (10, 9, 9)),
+        param(["-5 -30000 -12"], (-5, -12, -30000)),
+        param(["1 2 3"], (3, 2, 1)),
     ]
 )
-def test_H_main(numbers, expected):
-
-    assert main(numbers) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

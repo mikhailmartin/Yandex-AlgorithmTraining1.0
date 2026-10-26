@@ -5,7 +5,7 @@ sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork7.G_childrens_party import Solver
+from HomeWork7.G_childrens_party.main import main
 
 
 @pytest.mark.parametrize(
@@ -18,7 +18,7 @@ from HomeWork7.G_childrens_party import Solver
                 "1 1 2",
             ],
             (1, [0, 1]),
-            id="example1"
+            id="example1",
         ),
         param(
             [
@@ -27,10 +27,9 @@ from HomeWork7.G_childrens_party import Solver
                 "1 1 1",
             ],
             (1, [1, 1]),
-            id="example2"
+            id="example2",
         ),
     ],
 )
-def test_solve(lines, expected):
-    solver = Solver.from_strings(lines)
-    assert solver.solve() == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

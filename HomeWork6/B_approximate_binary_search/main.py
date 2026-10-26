@@ -1,0 +1,44 @@
+import sys
+
+
+def main(lines: list[str] | None = None) -> list[int]:
+
+    lines = lines or sys.stdin.read().splitlines()
+
+    n, k = map(int, lines[0].split())
+    arr1 = list(map(int, lines[1].split()))
+    arr2 = list(map(int, lines[2].split()))
+
+    def lbs(lo: int, hi: int) -> int:
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if check(mid):
+                hi = mid
+            else:
+                lo = mid + 1
+        return lo
+
+    def check(ptr: int) -> bool:
+        return arr1[ptr] >= num
+
+    res = []
+    for num in arr2:
+        left = lbs(lo=0, hi=n-1)
+
+        if left == 0:
+            res.append(arr1[left])
+        else:
+            left_num = arr1[left-1]
+            right_num = arr1[left]
+
+            if num - left_num <= right_num - num:
+                res.append(left_num)
+            else:
+                res.append(right_num)
+
+    return res
+
+
+if __name__ == "__main__":
+    result = main()
+    print("\n".join(map(str, result)))

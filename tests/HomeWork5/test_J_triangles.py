@@ -1,11 +1,12 @@
 import os
 import sys
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork5.J_triangles import main, get_symmetric
+from HomeWork5.J_triangles.main import main, get_symmetric
 
 
 def test_J_get_symmetric():
@@ -14,12 +15,11 @@ def test_J_get_symmetric():
 
 
 @pytest.mark.parametrize(
-    ("points", "expected"),
+    ("lines", "expected"),
     [
-        param([(0, 0), (2, 2), (-2, 2)], 1),
-        param([(0, 0), (1, 1), (1, 0), (0, 1)], 4),
+        param(["3", "0 0", "2 2", "-2 2"], 1, id="example1"),
+        param(["4", "0 0", "1 1", "1 0", "0 1"], 4, id="example2"),
     ],
 )
-def test_J_triangles(points, expected):
-
-    assert main(points) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

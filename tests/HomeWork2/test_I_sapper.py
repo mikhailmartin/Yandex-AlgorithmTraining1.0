@@ -1,19 +1,21 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork2.I_sapper import main
+from HomeWork2.I_sapper.main import main
 
 
 @pytest.mark.parametrize(
-    ("n", "m", "mines", "expected"),
+    ("lines", "expected"),
     [
-        param(3, 2, [(1, 1), (2, 2)], "* 2\n2 *\n1 1"),
-        param(2, 2, [], "0 0\n0 0"),
-        param(4, 4, [(1, 3), (2, 1), (4, 2), (4, 4)], "1 2 * 1\n* 2 1 1\n2 2 2 1\n1 * 2 *")
+        param(["3 2 2", "1 1", "2 2"], "* 2\n2 *\n1 1"),
+        param(["2 2 0"], "0 0\n0 0"),
+        param(["4 4 4", "1 3", "2 1", "4 2", "4 4"], "1 2 * 1\n* 2 1 1\n2 2 2 1\n1 * 2 *")
     ],
 )
-def test_I_sapper(n, m, mines, expected):
-
-    assert main(n, m, mines) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

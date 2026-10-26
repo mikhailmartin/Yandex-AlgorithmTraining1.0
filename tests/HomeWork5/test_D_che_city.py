@@ -1,17 +1,19 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork5.D_che_city import main
+from HomeWork5.D_che_city.main import main
 
 
 @pytest.mark.parametrize(
-    ("n", "r", "monuments", "expected"),
+    ("lines", "expected"),
     [
-        param(4, 4, [1, 3, 5, 8], 2),
+        param(["4 4", "1 3 5 8"], 2),
     ],
 )
-def test_D(n, r, monuments, expected):
-
-    assert main(n, r, monuments) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

@@ -1,21 +1,21 @@
 import os
 import sys
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork5.H_substring import main
+from HomeWork5.H_substring.main import main
 
 
 @pytest.mark.parametrize(
-    ("k", "string", "expected"),
+    ("lines", "expected"),
     [
-        param(1, "abb", (2, 1)),  # тест 1
-        param(2, "ababa", (4, 1)),  # тест 2
-        param(10, "aaaaaaaaaa", (10, 1)),  # тест 3
+        param(["3 1", "abb"], (2, 1), id="example1"),
+        param(["5 2", "ababa"], (4, 1), id="example2"),
+        param(["10 10", "aaaaaaaaaa"], (10, 1), id="test3"),
     ],
 )
-def test_H_main(k, string, expected):
-
-    assert main(k, string) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

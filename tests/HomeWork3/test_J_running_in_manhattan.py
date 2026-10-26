@@ -1,18 +1,37 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork3.J_running_in_manhattan import main
+from HomeWork3.J_running_in_manhattan.main import main
 
 
 @pytest.mark.parametrize(
-    ("t", "d", "navigator_points", "expected"),
+    ("lines", "expected"),
     [
-        param(2, 1, [(0, 1)], [(0, 0), (0, 1), (0, 2), (1, 1), (-1, 1)]),
-        param(2, 1, [(0, 1), (-2, 1), (-2, 3), (0, 3), (2, 5)], [(1, 5), (2, 4)]),
+        param(
+            [
+                "2 1 5",
+                "0 1",
+                "-2 1",
+                "-2 3",
+                "0 3",
+                "2 5",
+            ],
+            [(1, 5), (2, 4)],
+        ),
+        param(
+            ["1 1 1", "0 0"],
+            [(-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)],
+        ),
+        param(
+            ["1 10 1", "0 0"],
+            [(-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)],
+        ),
     ],
 )
-def test_J(t, d, navigator_points, expected):
-
-    assert set(main(t, d, navigator_points)) == set(expected)
+def test_main(lines, expected):
+    assert set(main(lines)) == set(expected)

@@ -5,7 +5,7 @@ sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork6.K_median_of_union_2 import Solver
+from HomeWork6.K_median_of_union_2.main import main
 
 
 @pytest.mark.parametrize(
@@ -19,9 +19,9 @@ from HomeWork6.K_median_of_union_2 import Solver
                 "1 6 8 5 11",
             ],
             [7, 10, 9],
+            id="example",
         ),
     ],
 )
-def test_solve(lines, expected):
-    solver = Solver.from_strings(lines)
-    assert solver.solve() == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

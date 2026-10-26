@@ -1,46 +1,28 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork2.F_symmetric_sequence import find_index_start_palindrome, main
+from HomeWork2.F_symmetric_sequence.main import main
 
 
 @pytest.mark.parametrize(
-    ("sequence", "expected"),
+    ("lines", "expected"),
     [
-        param([1], 0),
-        param([1, 2, 1], 0),
-        param([1, 2, 2, 1], 0),
-        param([1, 2, 3, 2, 1], 0),
-        param([1, 2], 1),
-        param([1, 2, 3], 2),
-        param([1, 2, 3, 2], 1),
-        param([1, 2, 3, 4, 5, 4, 3, 2, 1], 0),
-        param([1, 2, 1, 2, 2], 3),
-        param([1, 2, 3, 4, 5], 4),
+        param(["1", "1"], []),
+        param(["3", "1 2 1"], []),
+        param(["4", "1 2 2 1"], []),
+        param(["5", "1 2 3 2 1"], []),
+        param(["2", "1 2"], [1]),
+        param(["3", "1 2 3"], [2, 1]),
+        param(["4", "1 2 3 2"], [1]),
+        param(["9", "1 2 3 4 5 4 3 2 1"], []),
+        param(["5", "1 2 1 2 2"], [1, 2, 1]),
+        param(["5", "1 2 3 4 5"], [4, 3, 2, 1]),
     ],
 )
-def test_F_find_index_start_palindrome(sequence, expected):
-
-    assert find_index_start_palindrome(sequence) == expected
-
-
-@pytest.mark.parametrize(
-    ("sequence", "expected"),
-    [
-        param([1], (0, "")),
-        param([1, 2, 1], (0, "")),
-        param([1, 2, 2, 1], (0, "")),
-        param([1, 2, 3, 2, 1], (0, "")),
-        param([1, 2], (1, "1")),
-        param([1, 2, 3], (2, "2 1")),
-        param([1, 2, 3, 2], (1, "1")),
-        param([1, 2, 3, 4, 5, 4, 3, 2, 1], (0, "")),
-        param([1, 2, 1, 2, 2], (3, "1 2 1")),
-        param([1, 2, 3, 4, 5], (4, "4 3 2 1")),
-    ],
-)
-def test_F_main(sequence, expected):
-
-    assert main(sequence) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

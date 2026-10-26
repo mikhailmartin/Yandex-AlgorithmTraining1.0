@@ -1,19 +1,21 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork1.J_system_of_linear_equations_2 import main
+from HomeWork1.J_system_of_linear_equations_2.main import main
 
 
 @pytest.mark.parametrize(
-    ("a", "b", "c", "d", "e", "f", "expected"),
+    ("lines", "expected"),
     [
-        param(1, 0, 0, 1, 3, 3, "2 3.0 3.0"),
-        param(1, 1, 2, 2, 1, 2, "1 -1.0 1.0"),
-        param(0, 2, 0, 4, 1, 2, "4 0.5"),
+        param(["1", "0", "0", "1", "3", "3"], "2 3.0 3.0"),
+        param(["1", "1", "2", "2", "1", "2"], "1 -1.0 1.0"),
+        param(["0", "2", "0", "4", "1", "2"], "4 0.5"),
     ],
 )
-def test_J_systemm_of_linear_equations_2(a, b, c, d, e, f, expected):
-
-    assert main(a, b, c, d, e, f) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected

@@ -1,28 +1,26 @@
+import os
 import sys
-sys.path.append("../..")
+
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(parent_dir)
 
 import pytest
 from pytest import param
-from HomeWork2.E_cowcake_throwing_championship import (
-    find_best_Vasya_place, find_left_winner_index, find_best_Vasya_result
+from HomeWork2.E_cowcake_throwing_championship.main import (
+    main, find_left_winner_index, find_best_Vasya_result
 )
 
 
 @pytest.mark.parametrize(
-    ("results", "expected"),
+    ("lines", "expected"),
     [
-        param([10, 20, 15, 10, 30, 5, 1], 6),
-        param([15, 15, 10], 1),
-        param([10, 15, 20], 0),
-        # param([], 0),
-        # param([1, 1, 1], 0),
-        # param([5, 5, 5], 0),
-        # param([5, 5, 6], 0),
+        param(["7", "10 20 15 10 30 5 1"], 6),
+        param(["3", "15 15 10"], 1),
+        param(["3", "10 15 20"], 0),
     ],
 )
-def test_E_find_best_Vasya_place(results, expected):
-
-    assert find_best_Vasya_place(results) == expected
+def test_main(lines, expected):
+    assert main(lines) == expected
 
 
 @pytest.mark.parametrize(
@@ -34,7 +32,6 @@ def test_E_find_best_Vasya_place(results, expected):
     ],
 )
 def test_E_find_left_winner_index(results, expected):
-
     assert find_left_winner_index(results) == expected
 
 
@@ -47,5 +44,4 @@ def test_E_find_left_winner_index(results, expected):
     ],
 )
 def test_E_find_best_Vasya_result(results, left_winner_index, expected):
-
     assert find_best_Vasya_result(results, left_winner_index) == expected
